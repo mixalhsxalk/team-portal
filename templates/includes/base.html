@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="el">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,36 +31,36 @@
             <!-- Dashboard -->
             <a href="{% url 'dashboard' %}" class="nav-item nav-item-dashboard {% block nav_dashboard %}{% endblock %}">
                 <i class="fas fa-chart-pie"></i>
-                <span>Κεντρικός Πίνακας</span>
+                <span>Dashboard</span>
             </a>
 
-            <!-- ── ΕΞΟΠΛΙΣΜΟΣ ── -->
+            <!-- ── INVENTORY ── -->
             <div class="nav-module nav-module-inventory">
                 <div class="nav-label nav-label-inventory">
-                    <i class="fas fa-boxes"></i> Εξοπλισμός
+                    <i class="fas fa-boxes"></i> Inventory
                 </div>
                 <a href="{% url 'my-items' %}" class="nav-item {% block nav_my_items %}{% endblock %}">
                     <i class="fas fa-toolbox"></i>
-                    <span>Το Inventory Μου</span>
+                    <span>My Inventory</span>
                 </a>
                 <a href="{% url 'my-requests' %}" class="nav-item {% block nav_requests %}{% endblock %}">
                     <i class="fas fa-hand-holding"></i>
-                    <span>Αιτήματα</span>
+                    <span>Requests</span>
                 </a>
             </div>
 
-            <!-- ── ΠΡΟΣΩΠΙΚΟ ── -->
+            <!-- ── TEAM ── -->
             <div class="nav-module nav-module-team">
                 <div class="nav-label nav-label-team">
-                    <i class="fas fa-users"></i> Προσωπικό
+                    <i class="fas fa-users"></i> Team
                 </div>
                 <a href="{% url 'team-status' %}" class="nav-item {% block nav_team %}{% endblock %}">
                     <i class="fas fa-calendar-check"></i>
-                    <span>Ποιος Λείπει;</span>
+                    <span>Who's Out?</span>
                 </a>
                 <a href="{% url 'my-leaves' %}" class="nav-item {% block nav_leaves %}{% endblock %}">
                     <i class="fas fa-plane-departure"></i>
-                    <span>Οι Άδειές Μου</span>
+                    <span>My Leave</span>
                 </a>
             </div>
 
@@ -69,7 +69,7 @@
             <div class="nav-admin mt-3">
                 <a href="/admin/" class="nav-item">
                     <i class="fas fa-cog"></i>
-                    <span>Διαχείριση</span>
+                    <span>Admin</span>
                 </a>
             </div>
             {% endif %}
@@ -86,7 +86,7 @@
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn-logout">
-                    <i class="fas fa-sign-out-alt me-1"></i> Αποσύνδεση
+                    <i class="fas fa-sign-out-alt me-1"></i> Log out
                 </button>
             </form>
             {% endif %}

@@ -6,4 +6,4 @@ class LeaveRequestAdmin(admin.ModelAdmin):
     list_display = ('user', 'leave_type', 'start_date', 'end_date', 'status')
     list_filter = ('status', 'leave_type')
     search_fields = ('user__username',)
-    list_editable = ('status',) # Επιτρέπει τη γρήγορη έγκριση απευθείας από τη λίστα!
+    list_editable = ('status',)  # Approve straight from the list view

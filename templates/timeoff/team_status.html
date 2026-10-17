@@ -1,12 +1,12 @@
 {% extends "includes/base.html" %}
 
-{% block title %}Κατάσταση Ομάδας | Team Portal{% endblock %}
-{% block page_title %}Κατάσταση Ομάδας{% endblock %}
+{% block title %}Team Status | Team Portal{% endblock %}
+{% block page_title %}Team Status{% endblock %}
 {% block nav_team %}active{% endblock %}
 
 {% block page_actions %}
 <a href="{% url 'request-leave' %}" class="btn btn-primary rounded-pill px-4">
-    <i class="fas fa-calendar-plus me-1"></i> Νέα Άδεια
+    <i class="fas fa-calendar-plus me-1"></i> Request Leave
 </a>
 {% endblock %}
 
@@ -14,7 +14,7 @@
 <div class="container-fluid">
     <div class="row g-4">
 
-        <!-- Απόντες σήμερα -->
+        <!-- Out today -->
         <div class="col-lg-7">
             <div class="card p-0 overflow-hidden h-100">
                 <div class="card-header bg-white border-bottom px-4 py-3">
@@ -22,7 +22,7 @@
                         <span style="width:10px;height:10px;border-radius:50%;background:#dc3545;flex-shrink:0;"></span>
                         <h6 class="mb-0 fw-bold"
                             style="color:var(--ub-text-secondary);text-transform:uppercase;letter-spacing:.6px;font-size:.87rem;">
-                            Λείπουν Σήμερα &mdash; {{ today|date:"d/m/Y" }}
+                            Out Today &mdash; {{ today|date:"d/m/Y" }}
                         </h6>
                     </div>
                 </div>
@@ -42,13 +42,13 @@
                             </div>
                             <span class="badge rounded-pill px-3 py-2"
                                   style="background:var(--ub-bg);color:var(--ub-text-secondary);border:1px solid var(--ub-border);font-size:.82rem;">
-                                Έως {{ leave.end_date|date:"d/m" }}
+                                Until {{ leave.end_date|date:"d/m" }}
                             </span>
                         </li>
                         {% empty %}
                         <li class="list-group-item text-center py-5 border-0">
                             <i class="fas fa-sun fa-2x mb-2 d-block" style="color:#ffc107;opacity:.6;"></i>
-                            <span class="text-muted" style="font-size:.875rem;">Όλη η ομάδα είναι εδώ σήμερα!</span>
+                            <span class="text-muted" style="font-size:.875rem;">Everyone is in today!</span>
                         </li>
                         {% endfor %}
                     </ul>
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <!-- Επερχόμενες -->
+        <!-- Upcoming -->
         <div class="col-lg-5">
             <div class="card p-0 overflow-hidden h-100">
                 <div class="card-header bg-white border-bottom px-4 py-3">
@@ -64,7 +64,7 @@
                         <span style="width:10px;height:10px;border-radius:50%;background:var(--ub-teal);flex-shrink:0;"></span>
                         <h6 class="mb-0 fw-bold"
                             style="color:var(--ub-text-secondary);text-transform:uppercase;letter-spacing:.6px;font-size:.87rem;">
-                            Επερχόμενες Άδειες
+                            Upcoming Leave
                         </h6>
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                         <li class="list-group-item text-center py-5 border-0">
                             <i class="fas fa-calendar-check fa-2x mb-2 d-block opacity-25"
                                style="color:var(--ub-text-muted);"></i>
-                            <span class="text-muted" style="font-size:.875rem;">Δεν υπάρχουν προγραμματισμένες άδειες.</span>
+                            <span class="text-muted" style="font-size:.875rem;">No upcoming leave scheduled.</span>
                         </li>
                         {% endfor %}
                     </ul>

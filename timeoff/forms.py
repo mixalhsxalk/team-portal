@@ -6,8 +6,8 @@ class LeaveRequestForm(forms.ModelForm):
         model = LeaveRequest
         fields = ['leave_type', 'start_date', 'end_date', 'notes']
         widgets = {
-            # Προσθέτουμε HTML5 date picker
+            # Native HTML5 date picker
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
-            'notes': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Προαιρετική αιτιολογία ή σχόλιο...'}),
+            'notes': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Optional reason or comment...'}),
         }

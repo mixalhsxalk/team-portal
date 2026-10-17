@@ -18,8 +18,6 @@
 
 It is a simple, self-hosted alternative to heavyweight ERP tools. The UI uses Bootstrap 5 and an Ubuntu Yaru-inspired theme.
 
-> **Note:** The user interface is currently in **Greek**.
-
 ![Dashboard](docs/screenshots/dashboard.png)
 
 ## Features

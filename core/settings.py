@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Τα δικά μας apps
+    # Project apps
     'items',
     'timeoff',
 ]
@@ -59,7 +59,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # ← αυτό
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [BASE_DIR / 'static']  # ← και αυτό
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 WSGI_APPLICATION = "core.wsgi.application"
 
@@ -128,11 +128,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Το URL που θα στέλνει τους χρήστες όταν δεν είναι συνδεδεμένοι (για το @login_required)
+# Where @login_required sends anonymous users
 LOGIN_URL = 'login'
 
-# Πού να πηγαίνει ο χρήστης ΜΟΛΙΣ κάνει επιτυχημένο login
+# Where users land after logging in
 LOGIN_REDIRECT_URL = 'dashboard'
 
-# Πού να πηγαίνει ο χρήστης ΜΟΛΙΣ κάνει logout
+# Where users land after logging out
 LOGOUT_REDIRECT_URL = 'login'

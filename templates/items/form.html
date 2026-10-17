@@ -1,7 +1,7 @@
 {% extends "includes/base.html" %}
 
-{% block title %}Νέο Αντικείμενο | Team Portal{% endblock %}
-{% block page_title %}Προσθήκη Εξοπλισμού{% endblock %}
+{% block title %}New Item | Team Portal{% endblock %}
+{% block page_title %}Add Equipment{% endblock %}
 {% block nav_my_items %}active{% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
                     <span style="width:10px;height:10px;border-radius:50%;background:var(--ub-orange);"></span>
                     <h6 class="mb-0 fw-bold"
                         style="color:var(--ub-text-secondary);text-transform:uppercase;letter-spacing:.6px;font-size:.87rem;">
-                        Στοιχεία Αντικειμένου
+                        Item Details
                     </h6>
                 </div>
             </div>
@@ -36,9 +36,9 @@
                     {% endfor %}
 
                     <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
-                        <a href="{% url 'my-items' %}" class="btn btn-light px-4 rounded-pill border">Ακύρωση</a>
+                        <a href="{% url 'my-items' %}" class="btn btn-light px-4 rounded-pill border">Cancel</a>
                         <button type="submit" class="btn btn-primary px-5 rounded-pill">
-                            <i class="fas fa-save me-1"></i> Αποθήκευση
+                            <i class="fas fa-save me-1"></i> Save
                         </button>
                     </div>
                 </form>

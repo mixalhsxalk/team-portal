@@ -7,7 +7,7 @@ from timeoff.models import LeaveRequest
 
 @login_required
 def dashboard(request):
-    # --- 1. ΣΤΑΤΙΣΤΙΚΑ ΣΥΣΤΗΜΑΤΟΣ ---
+    # --- 1. Stats ---
     total_items = Item.objects.filter(quantity__gt=0).count()
     pending_requests = ItemRequest.objects.filter(status='pending').count()
     active_requests = ItemRequest.objects.filter(status='approved').count()
@@ -18,11 +18,11 @@ def dashboard(request):
     absent_today_count = approved_leaves.filter(start_date__lte=today, end_date__gte=today).count()
     my_upcoming_leaves_count = approved_leaves.filter(user=request.user, end_date__gte=today).count()
 
-    # --- 2. ΛΟΓΙΚΗ ΒΙΤΡΙΝΑΣ (Αναζήτηση & Φίλτρα) ---
+    # --- 2. Showcase (search & filters) ---
     query = request.GET.get('q', '')
     category_filter = request.GET.get('category', '')
 
-    # Φέρνουμε μόνο τα διαθέσιμα που ΔΕΝ ανήκουν στον χρήστη που έχει κάνει login
+    # Only available items that don't belong to the current user
     items = Item.objects.filter(quantity__gt=0).exclude(owner=request.user)
 
     if query:
@@ -40,7 +40,7 @@ def dashboard(request):
         'absent_today_count': absent_today_count,
         'my_upcoming_leaves_count': my_upcoming_leaves_count,
         
-        # Δεδομένα για τη Βιτρίνα
+        # Showcase data
         'items': items,
         'categories': Item.CATEGORY_CHOICES,
         'current_q': query,

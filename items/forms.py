@@ -6,10 +6,10 @@ class ItemForm(forms.ModelForm):
         model = Item
         fields = ['name', 'category', 'condition', 'quantity', 'description', 'image']
         labels = {
-            'name': 'Όνομα Εξοπλισμού',
-            'category': 'Κατηγορία',
-            'condition': 'Κατάσταση',
-            'quantity': 'Διαθέσιμη Ποσότητα',
-            'description': 'Περιγραφή / Σημειώσεις',
-            'image': 'Φωτογραφία',
+            'name': 'Equipment name',
+            'category': 'Category',
+            'condition': 'Condition',
+            'quantity': 'Available quantity',
+            'description': 'Description / Notes',
+            'image': 'Photo',
         }
