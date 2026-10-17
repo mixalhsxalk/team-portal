@@ -1,0 +1,63 @@
+{% extends "includes/base.html" %}
+
+{% block title %}Οι Άδειές μου | Team Portal{% endblock %}
+{% block page_title %}Οι Άδειές Μου{% endblock %}
+{% block nav_leaves %}active{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'request-leave' %}" class="btn btn-primary rounded-pill px-4">
+    <i class="fas fa-plus me-1"></i> Νέα Αίτηση
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card overflow-hidden p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Τύπος Άδειας</th>
+                        <th>Από</th>
+                        <th>Έως</th>
+                        <th>Κατάσταση</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leave in leaves %}
+                    <tr>
+                        <td class="ps-4 fw-bold">{{ leave.get_leave_type_display }}</td>
+                        <td class="text-muted">{{ leave.start_date|date:"d/m/Y" }}</td>
+                        <td class="text-muted">{{ leave.end_date|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if leave.status == 'approved' %}
+                                <span class="badge rounded-pill px-3 bg-success" style="font-size:.82rem;">Εγκρίθηκε</span>
+                            {% elif leave.status == 'rejected' %}
+                                <span class="badge rounded-pill px-3 bg-danger" style="font-size:.82rem;">Απορρίφθηκε</span>
+                            {% else %}
+                                <span class="badge rounded-pill px-3"
+                                      style="background:var(--ub-bg);color:var(--ub-text-secondary);border:1px solid var(--ub-border);font-size:.82rem;">
+                                    Εκκρεμεί
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-5">
+                            <i class="fas fa-plane-departure fa-2x mb-3 d-block opacity-25"
+                               style="color:var(--ub-text-muted);"></i>
+                            <span class="text-muted">Δεν έχεις καταχωρήσει κάποια αίτηση άδειας.</span>
+                            <br>
+                            <a href="{% url 'request-leave' %}" class="btn btn-primary btn-sm mt-3 rounded-pill px-4">
+                                <i class="fas fa-plus me-1"></i> Νέα Αίτηση
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

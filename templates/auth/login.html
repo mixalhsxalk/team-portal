@@ -1,0 +1,61 @@
+{% extends "includes/base.html" %}
+
+{% block title %}Σύνδεση | Team Portal{% endblock %}
+{% block page_title %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height:70vh;">
+    <div style="width:100%;max-width:420px;">
+
+        <div class="card login-card p-0 overflow-hidden">
+
+            <!-- Header -->
+            <div class="login-header">
+                <div class="logo-mark">
+                    <i class="fas fa-layer-group fa-lg text-white"></i>
+                </div>
+                <h4>Team Portal</h4>
+                <p>Εισάγετε τα στοιχεία σας για πρόσβαση</p>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body p-4">
+
+                {% if form.errors %}
+                <div class="alert alert-danger mb-4">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Λάθος όνομα χρήστη ή κωδικός πρόσβασης.
+                </div>
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Όνομα Χρήστη</label>
+                        <input type="text" name="username" class="form-control"
+                               id="id_username" required autofocus placeholder="π.χ. john.doe">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="id_password" class="form-label">Κωδικός Πρόσβασης</label>
+                        <input type="password" name="password" class="form-control"
+                               id="id_password" required placeholder="••••••••">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                        <i class="fas fa-sign-in-alt me-2"></i> Σύνδεση
+                    </button>
+
+                    <input type="hidden" name="next" value="{{ next|default:'/' }}">
+                </form>
+
+            </div>
+        </div>
+
+        <p class="text-center mt-3 text-muted" style="font-size:.78rem;">
+            Team Portal &copy; {% now "Y" %} &mdash; Εσωτερική Χρήση
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "includes/base.html" %}
+
+{% block title %}Το Inventory μου | Team Portal{% endblock %}
+{% block page_title %}Το Inventory Μου{% endblock %}
+{% block nav_my_items %}active{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'item-create' %}" class="btn btn-primary rounded-pill px-4">
+    <i class="fas fa-plus me-1"></i> Νέο Αντικείμενο
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card overflow-hidden p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Είδος</th>
+                        <th>Περιγραφή</th>
+                        <th>Ποσότητα</th>
+                        <th>Κατάσταση</th>
+                        <th>Προστέθηκε</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="ps-4 fw-bold">{{ item.name }}</td>
+                        <td class="text-muted">{{ item.description|truncatechars:55|default:"—" }}</td>
+                        <td>
+                            <span class="badge rounded-pill px-3"
+                                  style="background:var(--ub-orange-dim);color:var(--ub-orange);border:1px solid rgba(233,84,32,.2);">
+                                {{ item.quantity }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text-muted" style="font-size:.8rem;">{{ item.get_condition_display }}</span>
+                        </td>
+                        <td class="text-muted" style="font-size:.8rem;">{{ item.created_at|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="fas fa-folder-open fa-2x mb-3 d-block opacity-25"
+                               style="color:var(--ub-text-muted);"></i>
+                            <span class="text-muted">Δεν έχεις προσθέσει ακόμα κάποιο αντικείμενο.</span>
+                            <br>
+                            <a href="{% url 'item-create' %}" class="btn btn-primary btn-sm mt-3 rounded-pill px-4">
+                                <i class="fas fa-plus me-1"></i> Προσθήκη Αντικειμένου
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

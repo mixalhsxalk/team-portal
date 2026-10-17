@@ -1,0 +1,114 @@
+{% extends "includes/base.html" %}
+
+{% block title %}Αιτήματα | Team Portal{% endblock %}
+{% block page_title %}Αιτήματα Εξοπλισμού{% endblock %}
+{% block nav_requests %}active{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row g-4">
+
+        <!-- ── Εισερχόμενα ── -->
+        <div class="col-lg-6">
+            <div class="card h-100 p-0 overflow-hidden">
+                <div class="card-header bg-white border-bottom px-4 py-3 d-flex align-items-center gap-2">
+                    <span style="width:10px;height:10px;border-radius:50%;background:var(--ub-orange);flex-shrink:0;"></span>
+                    <h6 class="mb-0 fw-bold" style="color:var(--ub-text-secondary);text-transform:uppercase;letter-spacing:.6px;font-size:.87rem;">
+                        Μου Ζητούν
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for req in incoming %}
+                        <li class="list-group-item px-4 py-3 d-flex justify-content-between align-items-center gap-3">
+                            <div>
+                                <div class="fw-bold" style="font-size:.875rem;">{{ req.item.name }}</div>
+                                <small class="text-muted">
+                                    <i class="fas fa-user-tag me-1"></i>
+                                    από <span style="color:var(--ub-text-primary);font-weight:500;">{{ req.requester.username }}</span>
+                                </small>
+                            </div>
+                            <div class="d-flex gap-2 flex-shrink-0">
+                                {% if req.status == 'pending' %}
+                                    <form method="post" action="{% url 'respond-request' req.pk 'approve' %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-sm btn-success rounded-pill px-3">Έγκριση</button></form>
+                                    <form method="post" action="{% url 'respond-request' req.pk 'reject' %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">Απόρριψη</button></form>
+                                {% elif req.status == 'approved' %}
+                                    <span class="badge rounded-pill px-3 py-2"
+                                          style="background:#fff8e1;color:#b36a00;border:1px solid #fcd980;font-size:.82rem;">
+                                        Δανεισμένο
+                                    </span>
+                                    <form method="post" action="{% url 'respond-request' req.pk 'return' %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-sm btn-light border rounded-pill px-3">Επέστρεψε</button></form>
+                                {% else %}
+                                    <span class="badge rounded-pill px-3 py-2"
+                                          style="background:var(--ub-bg);color:var(--ub-text-muted);border:1px solid var(--ub-border);font-size:.82rem;">
+                                        {{ req.get_status_display }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center py-5 border-0">
+                            <i class="fas fa-inbox fa-2x mb-2 d-block opacity-25" style="color:var(--ub-text-muted);"></i>
+                            <span class="text-muted" style="font-size:.875rem;">Κανένα εισερχόμενο αίτημα.</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Εξερχόμενα ── -->
+        <div class="col-lg-6">
+            <div class="card h-100 p-0 overflow-hidden">
+                <div class="card-header bg-white border-bottom px-4 py-3 d-flex align-items-center gap-2">
+                    <span style="width:10px;height:10px;border-radius:50%;background:var(--ub-teal);flex-shrink:0;"></span>
+                    <h6 class="mb-0 fw-bold" style="color:var(--ub-text-secondary);text-transform:uppercase;letter-spacing:.6px;font-size:.87rem;">
+                        Οι Ζητήσεις Μου
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for req in outgoing %}
+                        <li class="list-group-item px-4 py-3 d-flex justify-content-between align-items-center gap-3">
+                            <div>
+                                <div class="fw-bold" style="font-size:.875rem;">{{ req.item.name }}</div>
+                                <small class="text-muted">
+                                    <i class="fas fa-user-circle me-1"></i>
+                                    <span style="color:var(--ub-text-primary);font-weight:500;">{{ req.item.owner.username }}</span>
+                                </small>
+                            </div>
+                            <div>
+                                {% if req.status == 'pending' %}
+                                    <span class="badge rounded-pill px-3 py-2"
+                                          style="background:var(--ub-bg);color:var(--ub-text-secondary);border:1px solid var(--ub-border);font-size:.82rem;">
+                                        <i class="fas fa-hourglass-half me-1"></i>Εκκρεμεί
+                                    </span>
+                                {% elif req.status == 'approved' %}
+                                    <span class="badge rounded-pill px-3 py-2 bg-success" style="font-size:.82rem;">
+                                        <i class="fas fa-check me-1"></i>Εγκρίθηκε
+                                    </span>
+                                {% elif req.status == 'rejected' %}
+                                    <span class="badge rounded-pill px-3 py-2 bg-danger" style="font-size:.82rem;">
+                                        <i class="fas fa-times me-1"></i>Απορρίφθηκε
+                                    </span>
+                                {% elif req.status == 'returned' %}
+                                    <span class="badge rounded-pill px-3 py-2 bg-secondary" style="font-size:.82rem;">
+                                        <i class="fas fa-undo me-1"></i>Επεστράφη
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center py-5 border-0">
+                            <i class="fas fa-paper-plane fa-2x mb-2 d-block opacity-25" style="color:var(--ub-text-muted);"></i>
+                            <span class="text-muted" style="font-size:.875rem;">Δεν έχεις ζητήσει εξοπλισμό.</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

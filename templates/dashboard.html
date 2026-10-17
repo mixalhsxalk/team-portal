@@ -1,0 +1,177 @@
+{% extends "includes/base.html" %}
+
+{% block title %}Dashboard | Team Portal{% endblock %}
+{% block page_title %}Κεντρικός Πίνακας{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- ── Stat Islands ─────────────────────────────── -->
+    <div class="row g-4 mb-4">
+
+        <!-- ΕΞΟΠΛΙΣΜΟΣ -->
+        <div class="col-lg-6">
+            <div class="stat-island island-inventory h-100">
+                <div class="island-header">
+                    <h5><i class="fas fa-toolbox me-2"></i>Εξοπλισμός & Inventory</h5>
+                    <a href="{% url 'my-items' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                        Διαχείριση <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="row g-3 p-3">
+                    <div class="col-6">
+                        <div class="stat-tile">
+                            <div class="stat-icon stat-icon-orange">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Διαθέσιμα Είδη</div>
+                                <div class="stat-value">{{ total_items }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-tile">
+                            <div class="stat-icon stat-icon-warn">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Εκκρεμή Αιτήματα</div>
+                                <div class="stat-value">{{ pending_requests }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ΠΡΟΣΩΠΙΚΟ -->
+        <div class="col-lg-6">
+            <div class="stat-island island-team h-100">
+                <div class="island-header">
+                    <h5><i class="fas fa-users me-2"></i>Προσωπικό & Άδειες</h5>
+                    <a href="{% url 'team-status' %}" class="btn btn-sm rounded-pill px-3"
+                       style="border:1px solid var(--ub-teal); color:var(--ub-teal); background:transparent;">
+                        Προβολή <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="row g-3 p-3">
+                    <div class="col-6">
+                        <div class="stat-tile">
+                            <div class="stat-icon stat-icon-danger">
+                                <i class="fas fa-user-times"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Λείπουν Σήμερα</div>
+                                <div class="stat-value text-danger">{{ absent_today_count }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-tile">
+                            <div class="stat-icon stat-icon-teal">
+                                <i class="fas fa-plane-departure"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Οι Άδειές Μου</div>
+                                <div class="stat-value" style="color:var(--ub-teal)">{{ my_upcoming_leaves_count }}</div>
+                                <small class="text-muted" style="font-size:.82rem;">Προσεχείς</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Βιτρίνα ──────────────────────────────────── -->
+    <div class="card p-0 overflow-hidden">
+        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3 px-4">
+            <div class="d-flex align-items-center gap-2">
+                <div style="width:10px;height:10px;border-radius:50%;background:var(--ub-orange);"></div>
+                <h5 class="mb-0 fw-bold" style="font-size:.9rem;letter-spacing:.4px;text-transform:uppercase;color:var(--ub-text-secondary);">
+                    Βιτρίνα Εξοπλισμού
+                </h5>
+            </div>
+            <span class="badge rounded-pill px-3 py-2" style="background:var(--ub-bg);color:var(--ub-text-muted);border:1px solid var(--ub-border);font-size:.82rem;">
+                <i class="fas fa-search me-1"></i> Αναζήτηση & Δανεισμός
+            </span>
+        </div>
+
+        <!-- Filters -->
+        <div class="px-4 pt-3 pb-2" style="background:var(--ub-bg);">
+            <form method="get" class="row g-2 align-items-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0 text-muted" style="border-color:var(--ub-border)">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" name="q" class="form-control border-start-0"
+                               placeholder="Αναζήτηση ονόματος..." value="{{ current_q }}"
+                               style="border-color:var(--ub-border);">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <select name="category" class="form-select" style="border-color:var(--ub-border);">
+                        <option value="">Όλες οι Κατηγορίες</option>
+                        {% for code, name in categories %}
+                            <option value="{{ code }}" {% if current_cat == code %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-filter me-1"></i> Φίλτρο
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Items grid -->
+        <div class="p-4">
+            <div class="row g-3">
+                {% for item in items %}
+                <div class="col-md-4 col-lg-3">
+                    <div class="card item-card h-100 position-relative p-0">
+                        <span class="position-absolute top-0 end-0 m-2 badge rounded-pill"
+                              style="background:var(--ub-aubergine);font-size:.7rem;">
+                            ×{{ item.quantity }}
+                        </span>
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" class="card-img-top"
+                                 style="height:150px;object-fit:cover;">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center"
+                                 style="height:150px;background:var(--ub-bg);">
+                                <i class="fas fa-camera fa-2x text-muted opacity-25"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body p-3 d-flex flex-column">
+                            <span class="badge rounded-pill mb-2"
+                                  style="background:var(--ub-bg);color:var(--ub-text-secondary);border:1px solid var(--ub-border);width:fit-content;font-size:.82rem;">
+                                {{ item.get_category_display }}
+                            </span>
+                            <h6 class="fw-bold mb-1 text-dark">{{ item.name }}</h6>
+                            <small class="mb-2" style="color:var(--ub-orange);">
+                                <i class="fas fa-user-circle me-1"></i>{{ item.owner.username }}
+                            </small>
+                            <p class="text-muted small mb-3 flex-grow-1" style="font-size:.87rem;line-height:1.5;">
+                                {{ item.description|truncatechars:60 }}
+                            </p>
+                            <form method="post" action="{% url 'request-item' item.pk %}">{% csrf_token %}<button type="submit" class="btn btn-sm btn-outline-success rounded-pill fw-bold w-100"><i class="fas fa-hand-paper me-1"></i> Ζήτησέ το</button></form>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-boxes fa-3x mb-3 opacity-25" style="color:var(--ub-text-muted);"></i>
+                    <p class="text-muted mb-0">Δεν βρέθηκαν αποτελέσματα για αυτή την αναζήτηση.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
